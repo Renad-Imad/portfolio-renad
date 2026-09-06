@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Renad Imad — Full Stack Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F6EDDE;
+    --paper:#FBF6EC;
+    --blush:#E8A99B;
+    --terracotta:#BE5038;
+    --plum:#4A2233;
+    --gold:#C89638;
+    --sage:#78855A;
+    --ink:#3B241F;
+    --line: rgba(74,34,51,0.16);
+    --max: 920px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background-color:var(--cream);
+    background-image:
+      radial-gradient(rgba(74,34,51,0.05) 0.6px, transparent 0.6px);
+    background-size: 14px 14px;
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--gold); color:var(--paper); }
+
+  /* quilted diamond lattice, lifted from the border trim on the reference textile */
+  .lattice{
+    height:46px;
+    background-color:var(--paper);
+    background-image:
+      linear-gradient(45deg, transparent 46%, var(--gold) 46%, var(--gold) 49%, transparent 49%),
+      linear-gradient(-45deg, transparent 46%, var(--gold) 46%, var(--gold) 49%, transparent 49%),
+      radial-gradient(var(--terracotta) 1.4px, transparent 1.4px);
+    background-size: 26px 26px, 26px 26px, 26px 26px;
+    background-position:center, center, center;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .lattice.tight{ background-size:18px 18px,18px 18px,18px 18px; height:30px; }
+
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    margin:0;
+    color:var(--plum);
+    letter-spacing:-0.01em;
+  }
+
+  a{ color:inherit; }
+  img{ max-width:100%; display:block; }
+
+  .wrap{
+    max-width:var(--max);
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  /* ---------- stripe divider, echoing the duvet's ribbon trim ---------- */
+  .stripe{
+    height:14px;
+    width:100%;
+    background:repeating-linear-gradient(
+      100deg,
+      var(--plum) 0px, var(--plum) 6px,
+      var(--gold) 6px, var(--gold) 10px,
+      var(--cream) 10px, var(--cream) 14px,
+      var(--terracotta) 14px, var(--terracotta) 18px,
+      var(--cream) 18px, var(--cream) 22px
+    );
+    opacity:0.9;
+  }
+
+  /* ---------- nav ---------- */
+  header.nav{
+    position:sticky; top:0; z-index:20;
+    background:rgba(246,237,222,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:var(--max);
+    margin:0 auto;
+    padding:18px 28px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .nav-mark{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:1.15rem;
+    color:var(--plum);
+    text-decoration:none;
+  }
+  .nav-links{
+    display:flex; gap:28px;
+    font-size:0.92rem;
+  }
+  .nav-links a{ text-decoration:none; color:var(--ink); opacity:0.75; transition:opacity .15s; }
+  .nav-links a:hover{ opacity:1; color:var(--terracotta); }
+  .nav-toggle{ display:none; background:none; border:none; cursor:pointer; padding:4px; }
+  .nav-toggle span{ display:block; width:22px; height:2px; background:var(--plum); margin:5px 0; }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding:88px 0 64px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-inner{
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:40px;
+    align-items:center;
+  }
+  .eyebrow-line{
+    display:flex; align-items:center; gap:12px;
+    margin-bottom:22px;
+    color:var(--sage);
+    font-size:0.92rem;
+  }
+  .eyebrow-line .btnmark{ width:14px; height:14px; flex:none; }
+  .hero h1{
+    font-size:clamp(2.6rem, 6vw, 4.1rem);
+    line-height:1.02;
+    font-optical-sizing:auto;
+  }
+  .hero h1 em{
+    font-style:italic;
+    font-weight:500;
+    color:var(--terracotta);
+  }
+  .hero p.lede{
+    max-width:46ch;
+    margin-top:22px;
+    font-size:1.12rem;
+    color:var(--ink);
+    opacity:0.86;
+  }
+  .hero-actions{
+    margin-top:34px;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-block;
+    padding:13px 26px;
+    border-radius:2px;
+    font-size:0.95rem;
+    text-decoration:none;
+    font-weight:500;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary{
+    background:var(--terracotta);
+    color:var(--paper);
+    box-shadow:0 2px 0 var(--plum);
+    outline:1px dashed rgba(251,246,236,0.55);
+    outline-offset:-5px;
+  }
+  .btn-primary:hover{ transform:translateY(-1px); box-shadow:0 3px 0 var(--plum); }
+  .btn-ghost{
+    border:1px solid var(--line);
+    color:var(--plum);
+  }
+  .btn-ghost:hover{ border-color:var(--terracotta); color:var(--terracotta); }
+
+  .hero-art{ position:relative; }
+  .hero-art svg{ width:100%; height:auto; }
+  .fabric-tag{
+    position:absolute;
+    left:6%;
+    bottom:2%;
+    background:var(--paper);
+    border:1px dashed var(--plum);
+    color:var(--plum);
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.62rem;
+    letter-spacing:0.06em;
+    padding:5px 9px;
+    transform:rotate(-4deg);
+    box-shadow:0 2px 0 rgba(74,34,51,0.12);
+  }
+
+  /* ---------- section shell ---------- */
+  section{ padding:64px 0; }
+  .section-head{
+    display:grid;
+    grid-template-columns:200px 1fr;
+    gap:32px;
+    margin-bottom:40px;
+  }
+  .section-head .tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.82rem;
+    color:var(--sage);
+    padding-top:6px;
+  }
+  .section-head h2{ font-size:1.9rem; }
+
+  @media (max-width:720px){
+    .section-head{ grid-template-columns:1fr; gap:8px; }
+  }
+
+  /* ---------- about ---------- */
+  .about-body{
+    display:grid;
+    grid-template-columns:200px 1fr;
+    gap:32px;
+  }
+  .about-body p{ max-width:62ch; color:var(--ink); opacity:0.88; }
+  .about-body p + p{ margin-top:14px; }
+  @media (max-width:720px){ .about-body{ grid-template-columns:1fr; } }
+
+  /* ---------- stack: fabric-swatch style ---------- */
+  .swatches{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    grid-column:2;
+  }
+  .swatch{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.86rem;
+    padding:9px 14px;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-left:4px solid var(--swatch-color, var(--terracotta));
+    color:var(--plum);
+  }
+
+  /* ---------- projects ---------- */
+  .project{
+    display:grid;
+    grid-template-columns:200px 1fr;
+    gap:32px;
+    padding:34px 0;
+    border-top:1.5px dashed var(--line);
+  }
+  .project:last-child{ border-bottom:1.5px dashed var(--line); }
+  .project .meta{ font-family:'JetBrains Mono', monospace; font-size:0.8rem; color:var(--sage); padding-top:4px; }
+  .project .mark{ width:24px; height:24px; margin-bottom:10px; display:block; }
+  .project h3{ font-size:1.4rem; margin-bottom:8px; }
+  .project p{ max-width:60ch; opacity:0.86; margin:0 0 14px; }
+  .project .tech{
+    display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px;
+  }
+  .project .tech span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.76rem;
+    color:var(--terracotta);
+    background:rgba(190,80,56,0.08);
+    padding:3px 9px;
+  }
+  .project .links a{
+    text-decoration:none;
+    color:var(--plum);
+    font-size:0.9rem;
+    border-bottom:1px solid var(--gold);
+    padding-bottom:1px;
+    margin-right:18px;
+  }
+  .project .links a:hover{ color:var(--terracotta); border-color:var(--terracotta); }
+  @media (max-width:720px){ .project{ grid-template-columns:1fr; } }
+
+  /* ---------- timeline ---------- */
+  .timeline{ grid-column:2; }
+  .tl-item{
+    display:grid;
+    grid-template-columns:90px 1fr;
+    gap:20px;
+    padding:18px 0;
+    border-top:1px solid var(--line);
+  }
+  .tl-item:last-child{ border-bottom:1px solid var(--line); }
+  .tl-item .yr{ font-family:'JetBrains Mono', monospace; font-size:0.82rem; color:var(--sage); padding-top:3px; }
+  .tl-item h4{ font-family:'Fraunces', serif; font-weight:600; font-size:1.08rem; color:var(--plum); margin:0 0 4px; }
+  .tl-item p{ margin:0; opacity:0.8; font-size:0.94rem; }
+
+  /* ---------- contact ---------- */
+  .contact{
+    text-align:left;
+  }
+  .contact h2{
+    font-size:clamp(2rem, 4.5vw, 3rem);
+    max-width:16ch;
+  }
+  .contact-row{
+    margin-top:28px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:28px;
+    align-items:baseline;
+  }
+  .contact-row a{
+    text-decoration:none;
+    font-size:1.05rem;
+    color:var(--plum);
+    border-bottom:1px solid var(--gold);
+  }
+  .contact-row a:hover{ color:var(--terracotta); border-color:var(--terracotta); }
+
+  footer{
+    padding:36px 0 48px;
+    font-size:0.85rem;
+    color:var(--ink);
+    opacity:0.6;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  /* ---------- entrance (single orchestrated moment) ---------- */
+  @media (prefers-reduced-motion: no-preference){
+    .hero-inner > *{
+      opacity:0;
+      animation:rise .7s ease forwards;
+    }
+    .hero-inner > *:nth-child(1){ animation-delay:.05s; }
+    .hero-inner > *:nth-child(2){ animation-delay:.18s; }
+    @keyframes rise{
+      from{ opacity:0; transform:translateY(14px); }
+      to{ opacity:1; transform:translateY(0); }
+    }
+  }
+
+  @media (max-width:820px){
+    .hero-inner{ grid-template-columns:1fr; }
+    .hero-art{ order:-1; max-width:280px; margin:0 auto; }
+    .nav-links{ display:none; }
+    .nav-toggle{ display:block; }
+    .nav-links.open{
+      display:flex; flex-direction:column;
+      position:absolute; top:100%; left:0; right:0;
+      background:var(--paper);
+      padding:18px 28px;
+      border-bottom:1px solid var(--line);
+    }
+  }
+  
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="nav-mark" href="#top">Renad Imad</a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#stack">Stack</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="stripe"></div>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <div>
+        <div class="eyebrow-line">
+          <svg class="btnmark" viewBox="0 0 40 40">
+            <defs><radialGradient id="woodEyebrow" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#DCB37E"/><stop offset="100%" stop-color="#8B5A2B"/></radialGradient></defs>
+            <circle cx="20" cy="20" r="17" fill="url(#woodEyebrow)" stroke="#6B4420" stroke-width="1.5"/>
+            <circle cx="14" cy="14" r="1.8" fill="#4A2E12"/><circle cx="26" cy="14" r="1.8" fill="#4A2E12"/>
+            <circle cx="14" cy="26" r="1.8" fill="#4A2E12"/><circle cx="26" cy="26" r="1.8" fill="#4A2E12"/>
+          </svg>
+          Available for new projects
+        </div>
+        <h1>Full stack developer,<br>growing <em>reliable</em> software.</h1>
+        <p class="lede">I design and build web products end to end — from data models to the pixels people touch. Three years turning tangled requirements into calm, dependable interfaces.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#work">See the work</a>
+          <a class="btn btn-ghost" href="#contact">Get in touch</a>
+        </div>
+      </div>
+      <div class="hero-art">
+        <svg viewBox="0 0 340 400" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <path id="petal" d="M0,0 C-7,-13 -6,-27 0,-36 C6,-27 7,-13 0,0 Z"/>
+            <path id="leaf" d="M0,0 C-9,-6 -16,-19 0,-42 C16,-19 9,-6 0,0 Z"/>
+            <pattern id="ribbon" width="11" height="11" patternTransform="rotate(35)" patternUnits="userSpaceOnUse">
+              <rect width="11" height="11" fill="#4A2233"/>
+              <rect width="4" height="11" fill="#C89638"/>
+              <rect x="7" width="1.4" height="11" fill="#F6EDDE"/>
+            </pattern>
+            <pattern id="quiltMini" width="13" height="13" patternUnits="userSpaceOnUse">
+              <rect width="13" height="13" fill="#FBF6EC"/>
+              <path d="M0,6.5 L6.5,0 L13,6.5 L6.5,13 Z" fill="none" stroke="#C89638" stroke-width="0.9"/>
+              <circle cx="6.5" cy="6.5" r="1" fill="#BE5038"/>
+            </pattern>
+            <radialGradient id="wood" cx="35%" cy="30%" r="75%">
+              <stop offset="0%" stop-color="#DCB37E"/>
+              <stop offset="100%" stop-color="#8B5A2B"/>
+            </radialGradient>
+            <g id="bloomLarge">
+              <g fill="#BE5038">
+                <use href="#petal" transform="rotate(0) scale(1.3)"/>
+                <use href="#petal" transform="rotate(45) scale(1.3)"/>
+                <use href="#petal" transform="rotate(90) scale(1.3)"/>
+                <use href="#petal" transform="rotate(135) scale(1.3)"/>
+                <use href="#petal" transform="rotate(180) scale(1.3)"/>
+                <use href="#petal" transform="rotate(225) scale(1.3)"/>
+                <use href="#petal" transform="rotate(270) scale(1.3)"/>
+                <use href="#petal" transform="rotate(315) scale(1.3)"/>
+              </g>
+              <g fill="#E8A99B">
+                <use href="#petal" transform="rotate(30) scale(0.78)"/>
+                <use href="#petal" transform="rotate(90) scale(0.78)"/>
+                <use href="#petal" transform="rotate(150) scale(0.78)"/>
+                <use href="#petal" transform="rotate(210) scale(0.78)"/>
+                <use href="#petal" transform="rotate(270) scale(0.78)"/>
+                <use href="#petal" transform="rotate(330) scale(0.78)"/>
+              </g>
+              <circle r="7.5" fill="#4A2233"/>
+              <circle cx="0" cy="-8" r="1.6" fill="#C89638"/>
+              <circle cx="6.5" cy="-3.5" r="1.6" fill="#C89638"/>
+              <circle cx="-6.5" cy="-3.5" r="1.6" fill="#C89638"/>
+              <circle cx="4" cy="5" r="1.6" fill="#C89638"/>
+              <circle cx="-4" cy="5" r="1.6" fill="#C89638"/>
+            </g>
+            <g id="bloomSmall">
+              <g fill="#C89638">
+                <use href="#petal" transform="rotate(0) scale(0.85)"/>
+                <use href="#petal" transform="rotate(60) scale(0.85)"/>
+                <use href="#petal" transform="rotate(120) scale(0.85)"/>
+                <use href="#petal" transform="rotate(180) scale(0.85)"/>
+                <use href="#petal" transform="rotate(240) scale(0.85)"/>
+                <use href="#petal" transform="rotate(300) scale(0.85)"/>
+              </g>
+              <circle r="5" fill="#4A2233"/>
+              <circle cx="0" cy="-5.5" r="1.2" fill="#BE5038"/>
+              <circle cx="4.5" cy="2.5" r="1.2" fill="#BE5038"/>
+              <circle cx="-4.5" cy="2.5" r="1.2" fill="#BE5038"/>
+            </g>
+          </defs>
+
+          <path d="M170 386 C170 300 118 276 108 200 C100 140 132 100 156 74" fill="none" stroke="#78855A" stroke-width="3"/>
+          <path d="M170 386 C170 300 224 276 236 200 C244 140 208 96 178 62" fill="none" stroke="#78855A" stroke-width="3"/>
+          <path d="M170 386 C170 320 170 260 170 180" fill="none" stroke="#78855A" stroke-width="3.4"/>
+
+          <use href="#leaf" fill="#78855A" transform="translate(120,230) rotate(-70) scale(1.1)"/>
+          <use href="#leaf" fill="#8A9868" transform="translate(224,230) rotate(70) scale(1.1)"/>
+          <use href="#leaf" fill="#78855A" transform="translate(150,150) rotate(-40) scale(0.9)"/>
+          <use href="#leaf" fill="#8A9868" transform="translate(196,150) rotate(40) scale(0.9)"/>
+          <use href="#leaf" fill="#78855A" transform="translate(170,300) rotate(-15) scale(1.15)"/>
+
+          <use href="#bloomSmall" transform="translate(108,200)"/>
+          <use href="#bloomSmall" transform="translate(236,200)"/>
+          <use href="#bloomLarge" transform="translate(170,66) scale(1.15)"/>
+
+          <rect x="18" y="322" width="70" height="46" fill="url(#quiltMini)"/>
+          <rect x="18" y="322" width="70" height="46" fill="none" stroke="#4A2233" stroke-width="1.1" stroke-dasharray="1.5 2.2" opacity="0.55"/>
+
+          <path d="M340,400 L340,300 C 300,300 260,340 240,400 Z" fill="url(#ribbon)" opacity="0.92"/>
+          <path d="M300,320 C 280,330 265,352 258,380" fill="none" stroke="#F6EDDE" stroke-width="1" stroke-dasharray="1.4 2" opacity="0.7"/>
+          <circle cx="288" cy="336" r="9" fill="url(#wood)" stroke="#6B4420" stroke-width="1"/>
+          <circle cx="285" cy="333" r="1.3" fill="#4A2E12"/>
+          <circle cx="291" cy="333" r="1.3" fill="#4A2E12"/>
+          <circle cx="285" cy="339" r="1.3" fill="#4A2E12"/>
+          <circle cx="291" cy="339" r="1.3" fill="#4A2E12"/>
+        </svg>
+        <div class="fabric-tag">MADE BY RENAD</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="lattice tight"></div>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="tag">01 / about</span>
+        <h2>Building things that hold up under real use.</h2>
+      </div>
+      <div class="about-body">
+        <div></div>
+        <div>
+          <p>I'm a full stack developer working across React, Node, and MongoDB, with a habit of caring as much about the API contract as the interface on top of it. I like taking a fuzzy idea, drawing the data model, and shipping something a team can actually rely on.</p>
+          <p>Outside of client work, I maintain a couple of open-source tooling libraries and spend a fair amount of time thinking about how good defaults make software feel calmer to use.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="stack">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="tag">02 / stack</span>
+        <h2>Tools I reach for</h2>
+      </div>
+      <div class="about-body">
+        <div></div>
+        <div class="swatches">
+          <span class="swatch" style="--swatch-color:#BE5038">Html</span>
+          <span class="swatch" style="--swatch-color:#BE5038">Css</span>
+          <span class="swatch" style="--swatch-color:#BE5038">TypeScript</span>
+          <span class="swatch" style="--swatch-color:#BE5038">Javascript</span>
+          <span class="swatch" style="--swatch-color:#BE5038">React</span>
+          <span class="swatch" style="--swatch-color:#BE5038">Next.js</span>
+          <span class="swatch" style="--swatch-color:#C89638">Node.js</span>
+          <span class="swatch" style="--swatch-color:#C89638">Express</span>
+          <span class="swatch" style="--swatch-color:#C89638">GraphQL</span>
+          <span class="swatch" style="--swatch-color:#78855A">MongoDB</span>
+          <span class="swatch" style="--swatch-color:#78855A">Redis</span>
+          <span class="swatch" style="--swatch-color:#78855A">Docker</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="tag">03 / work</span>
+        <h2>Selected projects</h2>
+      </div>
+
+       <div class="project">
+        <div class="meta">
+          <svg class="mark" viewBox="0 0 40 40" fill="#E8A99B"><ellipse cx="20" cy="8" rx="5" ry="9"/><ellipse cx="20" cy="8" rx="5" ry="9" transform="rotate(60 20 20)"/><ellipse cx="20" cy="8" rx="5" ry="9" transform="rotate(120 20 20)"/><ellipse cx="20" cy="8" rx="5" ry="9" transform="rotate(180 20 20)"/><ellipse cx="20" cy="8" rx="5" ry="9" transform="rotate(240 20 20)"/><ellipse cx="20" cy="8" rx="5" ry="9" transform="rotate(300 20 20)"/><circle cx="20" cy="20" r="4" fill="#4A2233"/></svg>
+          2026<br>Education
+        </div>
+        <div>
+          <h3>Rose Garden</h3>
+          <p>High-end clinic branding and digital experience focused on professional trust and clinical refinement.</p>
+          <div class="tech"><span>JavaScript</span><span>CSS</span><span>Java</span><span>HTML</span><span>Docker</span></div>
+          <div class="links"><a href="#">Live Site</a></div>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="meta">
+          <svg class="mark" viewBox="0 0 40 40" fill="#BE5038"><ellipse cx="20" cy="8" rx="5" ry="9"/><ellipse cx="20" cy="8" rx="5" ry="9" transform="rotate(60 20 20)"/><ellipse cx="20" cy="8" rx="5" ry="9" transform="rotate(120 20 20)"/><ellipse cx="20" cy="8" rx="5" ry="9" transform="rotate(180 20 20)"/><ellipse cx="20" cy="8" rx="5" ry="9" transform="rotate(240 20 20)"/><ellipse cx="20" cy="8" rx="5" ry="9" transform="rotate(300 20 20)"/><circle cx="20" cy="20" r="4" fill="#4A2233"/></svg>
+          2026<br>Education
+        </div>
+        <div>
+          <h3>Little Diamonds</h3>
+          <p>A premium, playful digital experience for a nursery in Jeddah. Warmth and quality in every detail.</p>
+          <div class="tech"><span>HTML</span><span>CSS</span><span>JavaScript</span><span>Vite</span></div>
+          <div class="links"><a href="https://little-diamonds-app.vercel.app/">Live site</a></div>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="meta">
+          <svg class="mark" viewBox="0 0 40 40" fill="#C89638"><ellipse cx="20" cy="8" rx="5" ry="9"/><ellipse cx="20" cy="8" rx="5" ry="9" transform="rotate(60 20 20)"/><ellipse cx="20" cy="8" rx="5" ry="9" transform="rotate(120 20 20)"/><ellipse cx="20" cy="8" rx="5" ry="9" transform="rotate(180 20 20)"/><ellipse cx="20" cy="8" rx="5" ry="9" transform="rotate(240 20 20)"/><ellipse cx="20" cy="8" rx="5" ry="9" transform="rotate(300 20 20)"/><circle cx="20" cy="20" r="4" fill="#4A2233"/></svg>
+          2026<br>Luxury Beauty
+        </div>
+        <div>
+          <h3>Nava Salon</h3>
+          <p>Minimalist digital presence crafted for a high-end salon audience in Jeddah.</p>
+          <div class="tech"><span>TypeScript</span><span>JavaScript</span><span>CSS</span></div>
+          <div class="links"><a href="https://nava-salon-new.vercel.app/">Live site</a></div>
+        </div>
+      </div>
+
+      <div class="project">
+        <div class="meta">
+          <svg class="mark" viewBox="0 0 40 40" fill="#78855A"><ellipse cx="20" cy="8" rx="5" ry="9"/><ellipse cx="20" cy="8" rx="5" ry="9" transform="rotate(60 20 20)"/><ellipse cx="20" cy="8" rx="5" ry="9" transform="rotate(120 20 20)"/><ellipse cx="20" cy="8" rx="5" ry="9" transform="rotate(180 20 20)"/><ellipse cx="20" cy="8" rx="5" ry="9" transform="rotate(240 20 20)"/><ellipse cx="20" cy="8" rx="5" ry="9" transform="rotate(300 20 20)"/><circle cx="20" cy="20" r="4" fill="#4A2233"/></svg>
+          2026<br>Medical Branding
+        </div>
+        <div>
+          <h3>Nava Clinic</h3>
+          <p>High-end clinic branding and digital experience focused on professional trust and clinical refinement.</p>
+          <div class="tech"><span>HTML</span><span>CSS</span><span>JavaScript</span></div>
+          <div class="links"><a href="https://nava-clinics.vercel.app/">Live Site</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <div class="stripe" style="height:10px"></div>
+
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <span class="tag" style="font-family:'JetBrains Mono', monospace; color:var(--sage); font-size:0.82rem;">04 / contact</span>
+      <h2 style="margin-top:14px;">Have a project in mind? I'd like to hear about it.</h2>
+      <div class="contact-row">
+        <a href="mailto:renad.imadyou@gmail.com">Email</a>
+        <a href="https://www.linkedin.com/in/renadimad/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <span>© 2026 Renad Imad</span>
+</footer>
+
+<script>
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => links.classList.toggle('open'));
+
+  document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', () => links.classList.remove('open'));
+});
+</script>
+
+</body>
+</html>
